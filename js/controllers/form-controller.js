@@ -1,4 +1,5 @@
 import Address from "../models/address.js";
+import * as requestService from '../services/request-service.js';
 
 function State() {
     this.address = new Address();
@@ -31,6 +32,7 @@ export function init() {
 
     state.inputNumber.addEventListener('change', handleInputNumberChange);
     state.btnClear.addEventListener('click', handleBtnClearClick);
+    state.btnSave.addEventListener('click', handleBtnSaveClick);
 }
 
 function handleInputNumberChange(event) {
@@ -40,6 +42,12 @@ function handleInputNumberChange(event) {
     else {
         setFormError("number", "");
     }
+}
+
+async function handleBtnSaveClick(event) {
+    event.preventDefault();
+    const result = await requestService.getJson('https://viacep.com.br/ws/01001000/json/');
+    console.log(result);
 }
 
 function handleBtnClearClick(event) {
@@ -63,3 +71,4 @@ function setFormError(key, value) {
     const element = document.querySelector(`[data-error="${key}"]`);
     element.innerHTML = value;
 }
+
